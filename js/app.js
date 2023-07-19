@@ -51,15 +51,23 @@ productos.forEach((product) => {
 // Función asincrónica para cargar el formulario y productos
 async function cargarInformacion() {
   // Cargar productos
-  await cargarProductos();
-
-  function obtenerProductos() {
-    fetch(URL)
-      .then(response => response.json())
-      .then(json => console.log(json))
-  }
+  document.addEventListener('DOMContentLoaded', () => 
+  {const productosContainer = document.getElementById('productos-container');
+   fetch('servicios.json') 
+   .then(response => response.json())
+   .then(data => { // Ahora que tenemos los datos del archivo JSON en 'data', podemos mostrarlos en la página.      
+    data.forEach(producto => {
+    const productoDiv = document.createElement('div');
+    productoDiv.innerHTML = `<h3>${producto.nombre}</h3>
+                             <p>Precio: $${producto.precio}</p>`;
+    
+    productosContainer.appendChild(productoDiv);
+   });
+  }) 
+  .catch(error => console.error('Error al obtener los productos:', error));});
 
   // Lógica del formulario
+  const arrayConsultas = [];
   const formulario = document.querySelector("#formulario");
   formulario.addEventListener("submit", validarFormulario);
 
@@ -68,6 +76,16 @@ async function cargarInformacion() {
 
     const email = document.querySelector("#email").value;
     const consulta = document.querySelector("#consulta").value;
+
+    //const consulObjeto = {
+      consulta = consulta,
+      email = email,
+   // }
+    arrayConsultas.push(consultaObjeto);
+    localStorage.setItem(`consultas`, JSON.stringify(arrayConsultas));
+  }
+  
+  
 
     console.log("Correo electrónico:", email);
     console.log("Consulta:", consulta);
@@ -99,7 +117,7 @@ async function cargarInformacion() {
       }, 5000);
     });
   }
-}
+
 
 // Llamar a la función asincrónica para cargar la información al inicio
 cargarInformacion();
@@ -109,11 +127,3 @@ const saveLocal = () => {
   localStorage.setItem("carrito", JSON.stringify(carrito));
 };
 
-//get item
-let servicios = [];
-fetch("./js/servicios.json")
-     .then(response => response.json())
-      .then(data => {
-      servicios = data;
-      cargarServicios(servicios);
-      })
