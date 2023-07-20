@@ -53,7 +53,7 @@ async function cargarInformacion() {
   // Cargar productos
   document.addEventListener('DOMContentLoaded', () => 
   {const productosContainer = document.getElementById('productos-container');
-   fetch('servicios.json') 
+   fetch('./js/servicios.json') 
    .then(response => response.json())
    .then(data => { // Ahora que tenemos los datos del archivo JSON en 'data', podemos mostrarlos en la página.      
     data.forEach(producto => {
